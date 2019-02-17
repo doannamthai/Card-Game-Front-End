@@ -2,14 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
-import App from './Layouts/Welcome/Welcome.js';
+import Welcome from './Layouts/Welcome/Welcome.js';
+import Login from './Layouts/Login/Login.js';
+import Dashboard from './Layouts/Dashboard/Dashboard.js';
+import Register from './Layouts/Register/Register.js';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const theme = createMuiTheme({
     palette: {
         type: 'dark',
+        primary: {
+          main: '#2196f3',  
+        },
     },
-   
     typography: {
         fontFamily: [
             '-apple-system',
@@ -29,7 +35,14 @@ const theme = createMuiTheme({
  
 ReactDOM.render(
 <MuiThemeProvider theme = { theme }>
-      <App />
+    <Router>
+      <div>
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/welcome" component={Welcome}/>
+        <Route exact path="/" component={Dashboard}/>
+      </div>
+    </Router>
    </MuiThemeProvider>,
 document.getElementById('root')
 );

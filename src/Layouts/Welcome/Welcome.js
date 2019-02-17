@@ -1,16 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import GroupIcon from '@material-ui/icons/GroupWork';
-
+import { Link, BrowserRouter, Route} from 'react-router-dom';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -61,22 +55,29 @@ const styles = theme => ({
   },
 });
 
-function Pricing(props) {
-  const { classes } = props;
 
+function Welcome(props) {
+  const { classes } = props;
+  function handleClick(e) {
+    e.preventDefault();
+    this.context.router.push('/login');
+  }
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="static" color="default" className={classes.appBar}>
+      <AppBar position="sticky" color="default" className={classes.appBar}>
         <Toolbar>
           <GroupIcon nativeColor = "#2196f3" />
           <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
             Card Game
-          </Typography>
+          </Typography>    
+          <Button href="/dashboard">
+            DashBoard
+          </Button>        
           <Button>Our Team</Button>
           <Button>Support</Button>
           <Button>Register</Button>
-          <Button color="secondary" variant="contained">
+          <Button color="secondary" variant="contained" href="/login">
             Login
           </Button>
           
@@ -93,8 +94,8 @@ function Pricing(props) {
   );
 }
 
-Pricing.propTypes = {
+Welcome.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Pricing);
+export default withStyles(styles)(Welcome);
