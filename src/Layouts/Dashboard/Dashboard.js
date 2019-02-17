@@ -1,29 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import GroupIcon from '@material-ui/icons/GroupWork';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import UniverseBackground from '../../Images/hell.jpg';
+import NavBar from '../../Components/NavBar.js';
 const styles = theme => ({
-  appBar: {
-    position: 'sticky',
-  },
-  toolbarTitle: {
-    flex: 1,
-  },
-  icon: {
-    marginRight: theme.spacing.unit * 2,
-  },
   heroUnit: {
     backgroundImage: 'url('+ UniverseBackground +')',
     backgroundRepeat: "no-repeat",
@@ -76,24 +65,7 @@ function Album(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar  color = "default" className={classes.appBar}>
-        <Toolbar>
-          <GroupIcon nativeColor = "#2196f3" />
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Card Game
-          </Typography>    
-          <Button href="/">
-            Dashboard
-          </Button>        
-          <Button>Our Team</Button>
-          <Button>Support</Button>
-          <Button href="/register">Register</Button>
-          <Button color="secondary" variant="contained" href="/login">
-            Login
-          </Button>
-          
-        </Toolbar>
-      </AppBar>
+      <NavBar/>
       <main>
         {/* Hero unit */}
         <div className={classes.heroUnit}>

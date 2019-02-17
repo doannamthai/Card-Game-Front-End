@@ -10,11 +10,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import NavBar from '../../Components/NavBar';
 
 const styles = theme => ({
   main: {
     width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    display: 'block', 
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -24,7 +25,7 @@ const styles = theme => ({
     },
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -47,6 +48,8 @@ function SignUp(props) {
   const { classes } = props;
 
   return (
+    <React.Fragment>
+    <NavBar/>
     <main className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
@@ -168,6 +171,7 @@ function SignUp(props) {
         </form>
       </Paper>
     </main>
+    </React.Fragment>
   );
 }
 
