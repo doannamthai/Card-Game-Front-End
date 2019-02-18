@@ -11,7 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import UniverseBackground from '../../Images/hell.jpg';
-import NavBar from '../../Components/NavBar.js';
+import NavBar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
 const styles = theme => ({
   heroUnit: {
     backgroundImage: 'url('+ UniverseBackground +')',
@@ -50,10 +51,6 @@ const styles = theme => ({
   },
   cardContent: {
     flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6,
   },
 });
 
@@ -121,14 +118,7 @@ function Album(props) {
         </div>
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Card Game Project
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Developed by Group 20
-        </Typography>
-      </footer>
+      <Footer/>
       {/* End footer */}
     </React.Fragment>
   );

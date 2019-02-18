@@ -11,12 +11,13 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import MailIcon from '@material-ui/icons/Email';
 import ProfileIcon from '@material-ui/icons/PieChart';
+import MailList from '../Components/MailList';
+
 import { Grid, AppBar, Toolbar, Button, Typography, IconButton, Badge, MenuItem, ListItemText, ListItemIcon, Paper, Grow, ClickAwayListener, MenuList, Popper} from '@material-ui/core';
 const styles = theme => ({
     appBar: {
       position: 'fixed',
       boxShadow: 'none',
-      background: '#323232',
     },
     toolbarSpacer: theme.mixins.toolbar,
     leftComponents: {
@@ -79,30 +80,57 @@ function UnLoggedInElement(props){
   return null;
 }
 
+
+const emails = [
+  {id: 1, sender: 'Thai Doan', title: 'How are you doing', content: 'Tomorrow is Tuesday, I cannot make it. I\'m so sorry'},
+  {id: 2, sender: 'Hello World', title: 'What are we doing for today', 
+  content: 'Ehh, I really dont know, should we got out to get something to eat first'},
+  {id: 3, sender: 'No name', title: 'It\'s my birthday', 
+  content: 'Ehh, I really dont know, should we got out to get something to eat first'},
+]
+
 class NavBar extends Component{
   constructor(){
     super();
     this.state = {
       loggedIn: Authentication.isLoggedIn(),
       authed: Authentication.isAuthed(),
-      anchorEl: null,
+      menuPopup: null,
       emailPopUp: null,
+      placementMenu: null,
+      placementEmail: null,
+      open: false,
+      openEmail: false,
     }
   }
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  handleMenu = placement => event => {
+    this.setState({
+       menuPopup: event.currentTarget,
+       open: this.state.placement !== placement || !this.state.open,
+       placementMenu: placement,
+      });
   };
 
-  handleEmail = event => {
-    this.setState({emailPopUp: event.currentTarget});
+  handleEmail = placement => event => {
+    this.setState({
+      emailPopUp: event.currentTarget,
+      openEmail: this.state.placementEmail !== placement || !this.state.openEmail,
+      placementEmail: placement,
+    });
   }
 
   handleEmailClose = () => {
-    this.setState({emailPopUp: null});
+    this.setState({
+      emailPopUp: null,
+      openEmail: false,
+    });
   }
   handleClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ 
+      menuPopup: null,
+      open: false,
+    });
   };
 
   logOut = () => {
@@ -113,8 +141,7 @@ class NavBar extends Component{
 
     render(){
       const { classes } = this.props;
-      const { anchorEl } = this.state;
-      const open = Boolean(anchorEl);
+      const { open, menuPopup, emailPopUp, placementMenu, placementEmail, openEmail} = this.state;
         return(
           <div>
             <AppBar  color = "default" className={classes.appBar}>
@@ -150,29 +177,37 @@ class NavBar extends Component{
               <Button color="secondary" variant="contained" href="/login">Login</Button>
               </UnLoggedInElement>
               <PrivateElement loggedIn={this.state.loggedIn}>
-              <IconButton aria-owns={open ? 'menu-appbar' : undefined}
+
+              <IconButton aria-owns={openEmail ? 'email-appbar' : undefined}
                   aria-haspopup="true"
-                  onClick={this.handleEmail}
+                  onClick={this.handleEmail('bottom-end')}
                   color="inherit">
-                <Badge badgeContent={4} color="secondary">
+                <Badge badgeContent={emails.length} color="secondary">
                 <MailIcon />
                 </Badge>
               </IconButton>
+              <Popper open={openEmail} placement={placementEmail} anchorEl={emailPopUp} transition disablePortal>
+                {({ TransitionProps}) => (
+                  <Grow {...TransitionProps}>
+                  <Paper>
+                  <ClickAwayListener onClickAway={this.handleEmailClose}>
+                    <MailList data={emails}/>
+                  </ClickAwayListener>
+                  </Paper>
+                </Grow>
+                )}
+              </Popper>
+
               <IconButton
                   aria-owns={open ? 'menu-appbar' : undefined}
                   aria-haspopup="true"
-                  onClick={this.handleMenu}
+                  onClick={this.handleMenu('bottom')}
                   color="inherit">
                 <AccountCircle />
                 </IconButton>
-
-                <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
-                  {({ TransitionProps, placement }) => (
-                  <Grow
-                  {...TransitionProps}
-                    id="menu-list-grow"
-                  style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                  >
+              <Popper placement={placementMenu} open={open} anchorEl={menuPopup} transition disablePortal>
+                  {({ TransitionProps }) => (
+                  <Grow {...TransitionProps}>
                   <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
