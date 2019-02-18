@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import GroupIcon from '@material-ui/icons/GroupWork';
-import { Link, BrowserRouter, Route} from 'react-router-dom';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../../Images/night-forest.jpg';
+import NavBar from '../../Components/NavBar';
 const styles = theme => ({
   '@global': {
     body: {
@@ -65,24 +60,7 @@ function Welcome(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="sticky" color="default" className={classes.appBar}>
-        <Toolbar>
-          <GroupIcon nativeColor = "#2196f3" />
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Card Game
-          </Typography>    
-          <Button href="/dashboard">
-            DashBoard
-          </Button>        
-          <Button>Our Team</Button>
-          <Button>Support</Button>
-          <Button>Register</Button>
-          <Button color="secondary" variant="contained" href="/login">
-            Login
-          </Button>
-          
-        </Toolbar>
-      </AppBar>
+      <NavBar/>
       <main className={classes.layout}>
         {/* Hero unit */}
   

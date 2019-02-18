@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import NavBar from '../../Components/NavBar';
+import Authentication from '../../Utils/Authentication';
 
 const styles = theme => ({
   main: {
@@ -63,9 +64,8 @@ class SignIn extends Component  {
   }
 
   submitForm(v){
-    v.preventDefault();
     if (this.state.email === "admin@gmail.com" && this.state.password === "12345"){
-
+      Authentication.setAccessToken("12345");
     }
   }
 
@@ -104,6 +104,7 @@ class SignIn extends Component  {
               color="primary"
               onClick={this.submitForm}
               className={classes.submit}
+              href="/"
             >
               Sign in
             </Button>
