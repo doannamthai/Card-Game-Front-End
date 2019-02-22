@@ -2,20 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
-import BackgroundImage from '../../Images/night-forest.jpg';
+import BackgroundImage from '../../Images/background1.jpg';
 import NavBar from '../../Components/NavBar';
+import {Button, Typography } from '@material-ui/core';
+
 const styles = theme => ({
   '@global': {
     body: {
       backgroundImage: 'url('+ BackgroundImage+')',
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      backgroundSize: "cover",
     },
   },
-  appBar: {
-    position: 'relative',    
+  heroButtons: {
+    marginTop: theme.spacing.unit * 4,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
   },
-  toolbarTitle: {
-    flex: 1,
-  },
+
   layout: {
     width: 'auto',
     marginLeft: theme.spacing.unit * 3,
@@ -29,24 +36,7 @@ const styles = theme => ({
   heroContent: {
     maxWidth: 600,
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-  },
-  
-  cardPricing: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'baseline',
-    marginBottom: theme.spacing.unit * 2,
-  },
-  cardActions: {
-    [theme.breakpoints.up('sm')]: {
-      paddingBottom: theme.spacing.unit * 2,
-    },
-  },
-  footer: {
-    marginTop: theme.spacing.unit * 8,
-    borderTop: `1px solid ${theme.palette.divider}`,
-    padding: `${theme.spacing.unit * 6}px 0`,
+    padding: `${theme.spacing.unit * 12}px 0 ${theme.spacing.unit * 6}px`,
   },
 });
 
@@ -60,14 +50,20 @@ function Welcome(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <NavBar/>
+      <NavBar transparent="true"/>
       <main className={classes.layout}>
-        {/* Hero unit */}
-  
+          <div className={classes.heroContent}>
+            <Typography component="h1" variant="h1" align="center" color="textPrimary" gutterBottom>
+              Card Game
+            </Typography>
+            
+            <div className={classes.heroButtons}>
+                <Button variant="raised" color="inherited">
+                  Get Started
+                </Button>
+            </div>
+        </div>
       </main>
-      {/* Footer */}
-      
-      {/* End footer */}
     </React.Fragment>
   );
 }

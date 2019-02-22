@@ -47,7 +47,8 @@ class RouterCheck extends Component{
                 <Route path="/store" component={Store}/>
                 <UnLoggedInRoute loggedIn = {this.state.loggedIn} path="/register" component={Register} />
                 <UnLoggedInRoute  loggedIn = {this.state.loggedIn} path="/login" component={Login} />
-                
+                <UnLoggedInRoute loggedIn = {this.state.loggedIn} path="/welcome" component={Welcome} />
+
                 {/*<Route exact loggedIn = {this.state.loggedIn} path="/" component={Welcome} />*/}
                 <PrivateRoute exact authed = {this.state.authed} path="/admin" component={AdminDashboard}/>
                 <PrivateRoute authed = {this.state.authed} path="/admin/members" component={Welcome}/>

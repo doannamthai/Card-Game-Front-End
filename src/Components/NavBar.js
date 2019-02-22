@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import deepPurple from '@material-ui/core/colors/deepPurple';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Authentication from '../Utils/Authentication';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
@@ -18,6 +17,10 @@ const styles = theme => ({
     appBar: {
       position: 'fixed',
       boxShadow: 'none',
+    },
+    transparent: {
+      background: 'transparent',
+      borderBottom: '1px solid #fff',
     },
     toolbarSpacer: theme.mixins.toolbar,
     leftComponents: {
@@ -39,11 +42,7 @@ const styles = theme => ({
     icon: {
       marginRight: theme.spacing.unit * 2,
     },
-    bigAvatar: {
-      margin: 10,
-      width: 80,
-      height: 80,
-    },
+    
     orangeAvatar: {
       margin: 10,
       width: 80,
@@ -51,11 +50,7 @@ const styles = theme => ({
       color: '#fff',
       backgroundColor: deepOrange[500],
     },
-    purpleAvatar: {
-      margin: 10,
-      color: '#fff',
-      backgroundColor: deepPurple[500],
-    },
+   
   });
 
 
@@ -90,8 +85,8 @@ const emails = [
 ]
 
 class NavBar extends Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       loggedIn: Authentication.isLoggedIn(),
       authed: Authentication.isAuthed(),
@@ -101,7 +96,8 @@ class NavBar extends Component{
       placementEmail: null,
       open: false,
       openEmail: false,
-    }
+    };
+    
   }
 
   handleMenu = placement => event => {
@@ -141,10 +137,13 @@ class NavBar extends Component{
 
     render(){
       const { classes } = this.props;
+      let appBarCss = classes.appBar;
       const { open, menuPopup, emailPopUp, placementMenu, placementEmail, openEmail} = this.state;
+      appBarCss += this.props.transparent ? " " + classes.transparent : "";
+      console.log(appBarCss);
         return(
           <div>
-            <AppBar  color = "default" className={classes.appBar}>
+            <AppBar color = "default" className={appBarCss}>
             <Toolbar>
               <GroupIcon nativeColor = "#2196f3" />
               <Typography className={classes.title} variant="h6" color="inherit" noWrap>
@@ -157,9 +156,9 @@ class NavBar extends Component{
               <Button href="/store">
                 Store
               </Button>
-              
-              <PrivateElement loggedIn={this.state.loggedIn}> <Button href="/game">
-                Game</Button>
+              <PrivateElement loggedIn={this.state.loggedIn}> 
+              <Button href="/game">Game</Button>
+              <Button href="/marketplace">Market</Button>
               </PrivateElement>
               <PrivateElement loggedIn={this.state.loggedIn}> <Button href="/missions">
                 Missions</Button>

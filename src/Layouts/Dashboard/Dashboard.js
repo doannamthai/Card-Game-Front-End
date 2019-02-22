@@ -17,7 +17,7 @@ const styles = theme => ({
   heroUnit: {
     backgroundImage: 'url('+ UniverseBackground +')',
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "50 center",
+    backgroundPosition: "center center",
     backgroundSize: "cover",
   },
   heroContent: {
