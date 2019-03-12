@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import Authentication from '../Utils/Authentication';
 import AdminDashboard from '../Layouts/Admin/AdminDashboard.js';
 import Store from '../Layouts/Store/Store';
+import Profile from '../Layouts/profile/profile';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
     return (
@@ -30,6 +31,17 @@ function UnLoggedInRoute ({component: Component, loggedIn, ...rest}) {
     )
 }
 
+function LoggedInRoute ({component: Component, loggedIn, ...rest}) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => loggedIn === true
+          ? <Component {...props} />
+          : <Redirect to={{pathname: '/', state: {from: props.location}}} />}
+      />
+    )
+}
+
 class RouterCheck extends Component{
     constructor(props){
         super(props);
@@ -45,9 +57,12 @@ class RouterCheck extends Component{
             <div>
                 <Route exact path="/" component={Dashboard}/>
                 <Route path="/store" component={Store}/>
+
                 <UnLoggedInRoute loggedIn = {this.state.loggedIn} path="/register" component={Register} />
                 <UnLoggedInRoute  loggedIn = {this.state.loggedIn} path="/login" component={Login} />
                 <UnLoggedInRoute loggedIn = {this.state.loggedIn} path="/welcome" component={Welcome} />
+
+                <LoggedInRoute loggedIn = {this.state.loggedIn} path="/profile" component={Profile} />
 
                 {/*<Route exact loggedIn = {this.state.loggedIn} path="/" component={Welcome} />*/}
                 <PrivateRoute exact authed = {this.state.authed} path="/admin" component={AdminDashboard}/>
