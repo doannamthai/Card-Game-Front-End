@@ -69,7 +69,7 @@ function AuthedElement(props){
 }
 
 function UnLoggedInElement(props){
-  if(props.authed === false){
+  if(props.loggedIn === false){
     return props.children;
   }
   return null;
@@ -170,7 +170,7 @@ class NavBar extends Component{
               </div>
               <div className={classes.grow}/>
               <div className={classes.rightComponents}>
-              <UnLoggedInElement authed={this.state.authed}>
+              <UnLoggedInElement loggedIn={this.state.loggedIn}>
               <Button href="/register">Register</Button>
               <Button color="secondary" variant="contained" href="/login">Login</Button>
               </UnLoggedInElement>

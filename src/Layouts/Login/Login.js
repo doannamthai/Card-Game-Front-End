@@ -73,7 +73,7 @@ class SignIn extends Component  {
     .then(
       (result) => {
         if (result.token){
-          Authentication.setAccessToken(result.id, result.token);
+          Authentication.setAccessToken(result.id, result.token, result.isAdmin);
           window.location.href = "/";
         }
       },
