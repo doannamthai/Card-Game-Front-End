@@ -2,6 +2,7 @@ import {Component} from 'react';
 
 
 const access_token = "access_token";
+const user_id = "user_id";
 class Authentication extends Component {
     static isLoggedIn(){
         return localStorage.getItem(access_token) ? true : false;
@@ -11,8 +12,9 @@ class Authentication extends Component {
         return this.isLoggedIn() && true;
     }
 
-    static setAccessToken(token){
+    static setAccessToken(id, token){
         localStorage.setItem(access_token, token);
+        localStorage.setItem(user_id, id);
     }
     
     static deleteSession(){

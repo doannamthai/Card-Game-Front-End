@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import NavBar from '../../Components/NavBar';
+import ApiURL from '../../ApisURL';
+
 
 const styles = theme => ({
   main: {
@@ -43,135 +45,171 @@ const styles = theme => ({
   },
 });
 
-function SignUp(props) {
-  const { classes } = props;
+class SignUp extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      password: '',
+      email: '',
+      username: '',
+      firstname: '',
+      lastname: '',
+      repassword: '',
+    }
 
-  return (
-    <React.Fragment>
-    <NavBar/>
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form}>
-        <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="email"
-            name="email"
-            label="Email address"
-            fullWidth
-            autoComplete="email"
-          />
+  }
+
+  handleOnChange = (v) => {
+    this.setState({
+      [v.target.name]: v.target.value,
+    });
+  }
+
+
+  handleOnSubmit = (v) => {
+    v.preventDefault();
+    if (this.state.password != this.state.repassword){
+        window.alert("Your passwords do not match. Please try again");
+        return;
+    }
+    fetch(ApiURL.REGISTER_URL, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        "password": this.state.password,
+        "email" : this.state.email,
+        "username": this.state.username,
+        "firstname": this.state.firstname,
+        "lastname": this.state.lastname,
+      }),
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        if (result.status){
+          window.alert("Successful! You are now redirected to login page");
+          window.location.href = "/login";
+        } else{
+          window.alert("Cannot register! Please try again");
+        }
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+          window.alert("Cannot register! Please try again");
+      }
+    );
+  }
+
+
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+      <NavBar/>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form}>
+          <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="username"
+              name="username"
+              label="Username"
+              fullWidth
+              autoComplete="username"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="email"
+              name="email"
+              label="Email address"
+              fullWidth
+              autoComplete="email"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              fullWidth
+              autoComplete="current-password"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="repassword"
+              name="repassword"
+              type="password"
+              label="Repeat Password"
+              fullWidth
+              autoComplete="current-password"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="firstname"
+              name="firstname"
+              label="First name"
+              fullWidth
+              autoComplete="fname"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="lastname"
+              name="lastname"
+              label="Last name"
+              fullWidth
+              autoComplete="lname"
+              onChange={this.handleOnChange}
+            />
+          </Grid>
+          
+          <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.handleOnSubmit}
+            >
+              Sign in
+            </Button>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="password"
-            name="password"
-            type="password"
-            label="Password"
-            fullWidth
-            autoComplete="current-password"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="password"
-            name="password"
-            type="password"
-            label="Repeat Password"
-            fullWidth
-            autoComplete="current-password"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="First name"
-            fullWidth
-            autoComplete="fname"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="lastName"
-            name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="lname"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="billing address-line1"
-          />
-        </Grid>
-        
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="billing address-level2"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="billing postal-code"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="billing country"
-          />
-        </Grid>
-        
-        <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign in
-          </Button>
-      </Grid>
-        </form>
-      </Paper>
-    </main>
-    </React.Fragment>
-  );
+          </form>
+        </Paper>
+      </main>
+      </React.Fragment>
+    );
+  }
+
+  
 }
 
 SignUp.propTypes = {

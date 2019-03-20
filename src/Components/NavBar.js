@@ -140,7 +140,6 @@ class NavBar extends Component{
       let appBarCss = classes.appBar;
       const { open, menuPopup, emailPopUp, placementMenu, placementEmail, openEmail} = this.state;
       appBarCss += this.props.transparent ? " " + classes.transparent : "";
-      console.log(appBarCss);
         return(
           <div>
             <AppBar color = "default" className={appBarCss}>

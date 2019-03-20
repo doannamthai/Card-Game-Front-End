@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import NavBar from '../../Components/NavBar';
 import Authentication from '../../Utils/Authentication';
+import ApiURL from '../../ApisURL';
 
 const styles = theme => ({
   main: {
@@ -57,16 +58,32 @@ class SignIn extends Component  {
     this.submitForm = this.submitForm.bind(this);
   }
 
-  handleOnChange(v){
+  handleOnChange(v) {
     this.setState({
       [v.target.name]: v.target.value,
     })
   }
 
-  submitForm(v){
-    if (this.state.email === "admin@gmail.com" && this.state.password === "12345"){
-      Authentication.setAccessToken("12345");
-    }
+  submitForm(v) {
+    v.preventDefault();
+    fetch(ApiURL.LOGIN_URL + "?password=" + this.state.password + "&username=" + this.state.email, {
+      method: 'POST',
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        if (result.token){
+          Authentication.setAccessToken(result.id, result.token);
+          window.location.href = "/";
+        }
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+
+      }
+    );
   }
 
   render(){
