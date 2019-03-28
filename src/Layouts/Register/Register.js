@@ -9,8 +9,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import NavBar from '../../Components/NavBar';
-import ApiURL from '../../ApisURL';
+import NavBar from '../../components/NavBar';
+import {REGISTER_URL} from '../../ApisURL';
 
 
 const styles = theme => ({
@@ -68,11 +68,11 @@ class SignUp extends Component {
 
   handleOnSubmit = (v) => {
     v.preventDefault();
-    if (this.state.password != this.state.repassword){
+    if (this.state.password !== this.state.repassword){
         window.alert("Your passwords do not match. Please try again");
         return;
     }
-    fetch(ApiURL.REGISTER_URL, {
+    fetch(REGISTER_URL, {
       headers: {
         "Content-Type": "application/json"
       },

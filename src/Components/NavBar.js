@@ -5,12 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Authentication from '../Utils/Authentication';
+import Authentication from '../utils/Authentication';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import MailIcon from '@material-ui/icons/Email';
 import ProfileIcon from '@material-ui/icons/PieChart';
-import MailList from '../Components/MailList';
+import MailList from './MailList';
+import { Link } from 'react-router-dom'
 
 import { Grid, AppBar, Toolbar, Button, Typography, IconButton, Badge, MenuItem, ListItemText, ListItemIcon, Paper, Grow, ClickAwayListener, MenuList, Popper} from '@material-ui/core';
 const styles = theme => ({
@@ -122,12 +123,14 @@ class NavBar extends Component{
       openEmail: false,
     });
   }
+
   handleClose = () => {
     this.setState({ 
       menuPopup: null,
       open: false,
     });
   };
+
 
   logOut = () => {
     Authentication.deleteSession();
@@ -212,14 +215,14 @@ class NavBar extends Component{
                         <Grid container justify="center" alignItems="center">
                           <Avatar className={classes.orangeAvatar}>OP</Avatar>
                         </Grid>      
-                      <MenuItem onClick={this.handleClose} className={classes.menuItem}>
+                      <MenuItem containerElement={<Link to="/profile" />}  className={classes.menuItem}>
                         <ListItemIcon className={classes.icon}>
                           <ProfileIcon />
                         </ListItemIcon>
                         <ListItemText classes={{ primary: classes.primary }} inset primary="Profile" />
                       </MenuItem>
 
-                      <MenuItem onClick={this.handleClose} className={classes.menuItem}>
+                      <MenuItem className={classes.menuItem}>
                         <ListItemIcon className={classes.icon}>
                         <CollectionsIcon />
                         </ListItemIcon>

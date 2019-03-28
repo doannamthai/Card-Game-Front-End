@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../../Images/background1.jpg';
-import NavBar from '../../Components/NavBar';
+import NavBar from '../../components/NavBar';
 import {Button, Typography } from '@material-ui/core';
 
 const styles = theme => ({
@@ -43,10 +43,7 @@ const styles = theme => ({
 
 function Welcome(props) {
   const { classes } = props;
-  function handleClick(e) {
-    e.preventDefault();
-    this.context.router.push('/login');
-  }
+
   return (
     <React.Fragment>
       <CssBaseline />

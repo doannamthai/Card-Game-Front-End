@@ -7,7 +7,8 @@ const is_admin = "is_admin";
 
 class Authentication extends Component {
     static isLoggedIn(){
-        return localStorage.getItem(access_token) ? true : false;
+        return localStorage.getItem(access_token
+            ) ? true : false;
     }
 
     static isAuthed(){
@@ -24,6 +25,13 @@ class Authentication extends Component {
         localStorage.removeItem(access_token);
         localStorage.removeItem(user_id);
         localStorage.removeItem(is_admin);
+    }
+    static getUserId(){
+        return localStorage.getItem(user_id);
+    }
+
+    static getAccessToken(){
+        return localStorage.get(access_token);
     }
 }
 

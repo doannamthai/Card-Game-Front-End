@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
-import NavBar from '../../Components/NavBar.js';
+import NavBar from '../../components/NavBar.js';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Banner from '../../Images/universe.jpg';
-import ListCard from '../../Components/ListCard';
-import Footer from '../../Components/Footer';
+import ListCard from '../../components/ListCard';
+import Footer from '../../components/Footer';
 import { Grid, ListItem, ListItemText, Typography, InputBase} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -41,7 +40,7 @@ const styles = theme => ({
         boxShadow: '0 -30px 80px 50px #303030',
     },
     cardGrid: {
-        padding: '${theme.spacing.unit * 8}px 0',
+        padding: `${theme.spacing.unit * 8}px 0`,
     },
 
     mainGrid: {
@@ -89,7 +88,6 @@ const styles = theme => ({
     },
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const cards_data = [
     { id: 1, title: "Data", description: "Name hello 1" },
@@ -101,15 +99,6 @@ const cards_data = [
     { id: 7, title: "Data 7", description: "Name hello 7" },
     { id: 8, title: "Data 8", description: "Name hello 8" },
 ];
-
-function generate(element) {
-    return [0, 1, 2].map(value =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-}
-  
 
 class Store extends Component {
     state = {

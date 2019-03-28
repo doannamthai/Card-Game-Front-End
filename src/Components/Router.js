@@ -1,13 +1,13 @@
-import Welcome from '../Layouts/Welcome/Welcome.js';
-import Login from '../Layouts/Login/Login.js';
-import Dashboard from '../Layouts/Dashboard/Dashboard.js';
-import Register from '../Layouts/Register/Register.js';
-import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import Welcome from '../layouts/welcome/Welcome';
+import Login from '../layouts/login/Login';
+import Dashboard from '../layouts/dashboard/Dashboard';
+import Register from '../layouts/register/Register';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import React, {Component} from 'react';
-import Authentication from '../Utils/Authentication';
-import AdminDashboard from '../Layouts/Admin/AdminDashboard.js';
-import Store from '../Layouts/Store/Store';
-import Profile from '../Layouts/profile/profile';
+import Authentication from '../utils/Authentication';
+import AdminDashboard from '../layouts/admin/AdminDashboard';
+import Store from '../layouts/store/Store';
+import Profile from '../layouts/profile/Profile';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
     return (

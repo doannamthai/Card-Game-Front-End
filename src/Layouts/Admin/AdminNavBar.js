@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AppBar, withStyles, Toolbar, Typography, Badge, Grid } from "@material-ui/core";
+import { AppBar, withStyles, Toolbar, Typography, Badge} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems} from './listItems';
 
 const drawerWidth = 240;
 
@@ -81,12 +81,9 @@ const styles = theme => ({
 });
 
 class AdminNavBar extends Component{
-    constructor(props){
-        super(props);
-    }
     state = {
         open: true,
-      };
+    };
     
     handleDrawerOpen = () => {
         this.setState({ open: true });

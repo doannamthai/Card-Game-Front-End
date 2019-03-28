@@ -11,8 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import UniverseBackground from '../../Images/hell.jpg';
-import NavBar from '../../Components/NavBar';
-import Footer from '../../Components/Footer';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 const styles = theme => ({
   heroUnit: {
     backgroundImage: 'url('+ UniverseBackground +')',

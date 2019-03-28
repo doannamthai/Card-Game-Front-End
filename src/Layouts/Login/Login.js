@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import NavBar from '../../Components/NavBar';
-import Authentication from '../../Utils/Authentication';
-import ApiURL from '../../ApisURL';
+import NavBar from '../../components/NavBar';
+import Authentication from '../../utils/Authentication';
+import {LOGIN_URL} from '../../ApisURL';
 
 const styles = theme => ({
   main: {
@@ -66,7 +66,7 @@ class SignIn extends Component  {
 
   submitForm(v) {
     v.preventDefault();
-    fetch(ApiURL.LOGIN_URL + "?password=" + this.state.password + "&username=" + this.state.email, {
+    fetch(LOGIN_URL + "?password=" + this.state.password + "&username=" + this.state.email, {
       method: 'POST',
     })
     .then(res => res.json())
