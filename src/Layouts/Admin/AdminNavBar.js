@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { AppBar, withStyles, Toolbar, Typography, Badge} from "@material-ui/core";
+import { AppBar, withStyles, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import { mainListItems} from './listItems';
+import ListNavBar from './ListNavBar.js';
 
 const drawerWidth = 240;
 
@@ -121,11 +120,6 @@ class AdminNavBar extends Component{
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         
@@ -142,7 +136,7 @@ class AdminNavBar extends Component{
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List><ListNavBar/></List>
         </Drawer>
         
         </div>

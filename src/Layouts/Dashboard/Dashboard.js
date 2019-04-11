@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -13,7 +13,12 @@ import { withStyles } from '@material-ui/core/styles';
 import UniverseBackground from '../../Images/hell.jpg';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
+import {CARD_URL} from '../../ApisURL';
+
 const styles = theme => ({
+  main: {
+    paddingBottom: 200,
+  },
   heroUnit: {
     backgroundImage: 'url('+ UniverseBackground +')',
     backgroundRepeat: "no-repeat",
@@ -47,85 +52,152 @@ const styles = theme => ({
     flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '135%', 
   },
   cardContent: {
     flexGrow: 1,
   },
+
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const fetchedData = [
+  {"Rarity": null,
+  "Price": 0,
+  "Use": null,
+  "Title": null,
+  "Link": null,
+  "Id": null,
+  },
+  {"Rarity": null,
+  "Price": 0,
+  "Use": null,
+  "Title": null,
+  "Link": null,
+  "Id": null,
+  },
+  {"Rarity": null,
+  "Price": 0,
+  "Use": null,
+  "Title": null,
+  "Link": null,
+  "Id": null,
+  },
+  {"Rarity": null,
+  "Price": 0,
+  "Use": null,
+  "Title": null,
+  "Link": null,
+  "Id": null,
+  },
+]
+class Dashboard extends Component {
 
-function Album(props) {
-  const { classes } = props;
+  state = {
+      cards: fetchedData,
+  }
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <NavBar/>
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroUnit}>
-          <div className={classes.heroContent}>
-            <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
-              The Innovation of Card Game
+  componentDidMount(){
+    this.fetchCardData();
+  }
+
+  fetchCardData = () => {
+      return fetch(CARD_URL, {
+          method: "POST",
+      })
+      .then(res => res.json())
+      .then(
+          (result) => {
+              if (Object.entries(result).length !== 0 && !result.Error){
+                let arr = result.Cards.slice(0, 9);
+                  this.setState({
+                      cards: arr,
+                  })
+              }
+              else {
+                alert(result.Error)
+              }
+          },
+          (error) => {
+              console.log(error);
+          }
+      )
+  }
+
+  handleOnLink = link => v => {
+      window.location.href = link;
+  };
+
+
+  render() {
+    const { classes } = this.props;
+    const {  cards } = this.state;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <NavBar />
+        <main className={classes.main}>
+          {/* Hero unit */}
+          <div className={classes.heroUnit}>
+            <div className={classes.heroContent}>
+              <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
+                The Innovation of Card Game
             </Typography>
-            <Typography variant="h6" align="center" color="textSecondary" paragraph>
-            A card game is any game using playing cards as the primary device with which the game is played, be they traditional or game-specific. 
+              <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                A card game is any game using playing cards as the primary device with which the game is played, be they traditional or game-specific.
             </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={16} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Get Started
+              <div className={classes.heroButtons}>
+                <Grid container spacing={16} justify="center">
+                  <Grid item>
+                    <Button variant="contained" color="primary">
+                      Get Started
                   </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </div>
             </div>
           </div>
-        </div>
-        <div className={classNames(classes.layout, classes.cardGrid)}>
-          {/* End hero unit */}
-          <Grid container spacing={40}>
-            {cards.map(card => (
-              <Grid item key={card} sm={6} md={4} lg={3}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a description of the card
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                    <Button size="small" color="primary">
-                      Buy
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      </main>
-      {/* Footer */}
-      <Footer/>
-      {/* End footer */}
-    </React.Fragment>
-  );
+          <div className={classNames(classes.layout, classes.cardGrid)}>
+            {/* End hero unit */}
+            <Grid container spacing={40}>
+              {cards.map((card, index) => (
+                <Grid item key={card} sm={6} md={4} lg={3}>
+                  <Card className={classes.card}>
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={card.Link}
+                      title="Image title"
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h6" component="h2">
+                        {card.Title}
+                      </Typography>
+                      <Typography>
+                        {card.Name}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button onClick={this.handleOnLink("/card/" + card.Id)} size="small" color="primary">
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+
+          }
+              </main>
+        {/* Footer */}
+        <Footer />
+        {/* End footer */}
+      </React.Fragment>
+    )
+  }
 }
 
-Album.propTypes = {
-  classes: PropTypes.object.isRequired,
+Dashboard.propTypes = {
+classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Album);
+export default withStyles(styles)(Dashboard);

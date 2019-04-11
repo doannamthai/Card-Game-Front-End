@@ -10,14 +10,12 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import MailIcon from '@material-ui/icons/Email';
 import ProfileIcon from '@material-ui/icons/PieChart';
-import MailList from './MailList';
-import { Link } from 'react-router-dom'
 
-import { Grid, AppBar, Toolbar, Button, Typography, IconButton, Badge, MenuItem, ListItemText, ListItemIcon, Paper, Grow, ClickAwayListener, MenuList, Popper} from '@material-ui/core';
+import { Grid, AppBar, Toolbar, Button, Typography, IconButton,  MenuItem, ListItemText, ListItemIcon, Paper, Grow, ClickAwayListener, MenuList, Popper} from '@material-ui/core';
 const styles = theme => ({
     appBar: {
       position: 'fixed',
-      boxShadow: 'none',
+      zIndex: theme.zIndex.drawer + 1,
     },
     transparent: {
       background: 'transparent',
@@ -77,13 +75,6 @@ function UnLoggedInElement(props){
 }
 
 
-const emails = [
-  {id: 1, sender: 'Thai Doan', title: 'How are you doing', content: 'Tomorrow is Tuesday, I cannot make it. I\'m so sorry'},
-  {id: 2, sender: 'Hello World', title: 'What are we doing for today', 
-  content: 'Ehh, I really dont know, should we got out to get something to eat first'},
-  {id: 3, sender: 'No name', title: 'It\'s my birthday', 
-  content: 'Ehh, I really dont know, should we got out to get something to eat first'},
-]
 
 class NavBar extends Component{
   constructor(props){
@@ -92,13 +83,9 @@ class NavBar extends Component{
       loggedIn: Authentication.isLoggedIn(),
       authed: Authentication.isAuthed(),
       menuPopup: null,
-      emailPopUp: null,
       placementMenu: null,
-      placementEmail: null,
       open: false,
-      openEmail: false,
     };
-    
   }
 
   handleMenu = placement => event => {
@@ -109,21 +96,7 @@ class NavBar extends Component{
       });
   };
 
-  handleEmail = placement => event => {
-    this.setState({
-      emailPopUp: event.currentTarget,
-      openEmail: this.state.placementEmail !== placement || !this.state.openEmail,
-      placementEmail: placement,
-    });
-  }
-
-  handleEmailClose = () => {
-    this.setState({
-      emailPopUp: null,
-      openEmail: false,
-    });
-  }
-
+ 
   handleClose = () => {
     this.setState({ 
       menuPopup: null,
@@ -131,6 +104,9 @@ class NavBar extends Component{
     });
   };
 
+  handleLink = (src) => {
+    window.location.href = src;
+  }
 
   logOut = () => {
     Authentication.deleteSession();
@@ -141,7 +117,7 @@ class NavBar extends Component{
     render(){
       const { classes } = this.props;
       let appBarCss = classes.appBar;
-      const { open, menuPopup, emailPopUp, placementMenu, placementEmail, openEmail} = this.state;
+      const { open, menuPopup,  placementMenu} = this.state;
       appBarCss += this.props.transparent ? " " + classes.transparent : "";
         return(
           <div>
@@ -158,15 +134,10 @@ class NavBar extends Component{
               <Button href="/store">
                 Store
               </Button>
-              <PrivateElement loggedIn={this.state.loggedIn}> 
-              <Button href="/game">Game</Button>
-              <Button href="/marketplace">Market</Button>
-              </PrivateElement>
+              
               <PrivateElement loggedIn={this.state.loggedIn}> <Button href="/missions">
                 Missions</Button>
               </PrivateElement>
-              <Button>Our Team</Button>
-              <Button>Support</Button>
               <AuthedElement authed={this.state.authed}> 
               <Button color="default" variant="contained" href="/admin">Admin </Button>
               </AuthedElement>
@@ -179,26 +150,13 @@ class NavBar extends Component{
               </UnLoggedInElement>
               <PrivateElement loggedIn={this.state.loggedIn}>
 
-              <IconButton aria-owns={openEmail ? 'email-appbar' : undefined}
+              <IconButton
                   aria-haspopup="true"
-                  onClick={this.handleEmail('bottom-end')}
+                  onClick={() => this.handleLink("/mail")}
                   color="inherit">
-                <Badge badgeContent={emails.length} color="secondary">
                 <MailIcon />
-                </Badge>
               </IconButton>
-              <Popper open={openEmail} placement={placementEmail} anchorEl={emailPopUp} transition disablePortal>
-                {({ TransitionProps}) => (
-                  <Grow {...TransitionProps}>
-                  <Paper>
-                  <ClickAwayListener onClickAway={this.handleEmailClose}>
-                    <MailList data={emails}/>
-                  </ClickAwayListener>
-                  </Paper>
-                </Grow>
-                )}
-              </Popper>
-
+    
               <IconButton
                   aria-owns={open ? 'menu-appbar' : undefined}
                   aria-haspopup="true"
@@ -215,18 +173,18 @@ class NavBar extends Component{
                         <Grid container justify="center" alignItems="center">
                           <Avatar className={classes.orangeAvatar}>OP</Avatar>
                         </Grid>      
-                      <MenuItem containerElement={<Link to="/profile" />}  className={classes.menuItem}>
+                      <MenuItem  onClick={() => {this.handleLink("/profile")}} className={classes.menuItem}>
                         <ListItemIcon className={classes.icon}>
                           <ProfileIcon />
                         </ListItemIcon>
                         <ListItemText classes={{ primary: classes.primary }} inset primary="Profile" />
                       </MenuItem>
 
-                      <MenuItem className={classes.menuItem}>
+                      <MenuItem  onClick={() => {this.handleLink("/collection")}} className={classes.menuItem}>
                         <ListItemIcon className={classes.icon}>
                         <CollectionsIcon />
                         </ListItemIcon>
-                        <ListItemText classes={{ primary: classes.primary }} inset primary="Collection" />
+                        <ListItemText   classes={{ primary: classes.primary }} inset primary="Collection" />
                       </MenuItem>
 
                       <MenuItem onClick={() => {this.handleClose(); this.logOut()}} className={classes.menuItem}>

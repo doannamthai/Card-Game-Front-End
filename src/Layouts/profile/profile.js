@@ -29,12 +29,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+
 const styles = theme => ({
-    
+
     layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
+        paddingBottom: 200,
         [theme.breakpoints.up(1400 + theme.spacing.unit * 3 * 2)]: {
           width: 1400,
           marginLeft: 'auto',
@@ -164,6 +166,7 @@ class Profile extends Component {
     
     handleSubmit = (v) => {
         v.preventDefault();
+        let s = this;
         let profile = this.state.profile;
         if (profile.password === profile.repassword) {
             fetch(PROFILE_UPDATE_URL + "?user_id=" + profile.userId, {
@@ -184,7 +187,7 @@ class Profile extends Component {
                     if (!result.error){
                         window.location.reload();
                     } else {
-                        this.setState({ 
+                        s.setState({ 
                             open: true,
                             error: result.error,
                         });
@@ -193,7 +196,7 @@ class Profile extends Component {
                 },
                 // Note: it's important to handle errors here
                 (error) => {
-                    this.setState({ 
+                    s.setState({ 
                         open: true,
                         error: error,
                     });

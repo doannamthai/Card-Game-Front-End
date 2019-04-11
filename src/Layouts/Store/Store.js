@@ -5,187 +5,194 @@ import { withStyles } from '@material-ui/core/styles';
 import NavBar from '../../components/NavBar.js';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import Banner from '../../Images/universe.jpg';
 import ListCard from '../../components/ListCard';
 import Footer from '../../components/Footer';
-import { Grid, ListItem, ListItemText, Typography, InputBase} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { ListItem, ListItemText, Typography, InputBase} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import {CARD_URL} from '../../ApisURL';
 
 
 const styles = theme => ({
-    heroUnit: {
-        backgroundImage: 'url('+ Banner +')',
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        backgroundSize: "cover",
-        width: '100%',
-        height: 300,
-        zIndex: 1,
-        position: 'relative',
-    },
-    heroContent: {
-        maxWidth: 700,
-        margin: '0 auto',
-        
-        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-    },
-    layout: {
-        zIndex: 2,
-        width: '100%',
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        padding: '0px 50px 50px 50px',
-        position: 'relative',
-        boxShadow: '0 -30px 80px 50px #303030',
-    },
-    cardGrid: {
-        padding: `${theme.spacing.unit * 8}px 0`,
-    },
-
-    mainGrid: {
-        width: '100%!important',
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-          backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing.unit * 5,
-        marginBottom: theme.spacing.unit * 10,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-          marginLeft: 'auto',
-          width: 300,
-        },
-    },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
+    root: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
     },
-    inputRoot: {
-        color: 'white',
+    content: {
+        display: 'flex',
         width: '100%',
+        paddingBottom: 250,
+    },
+    mailContent: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 8,
+        textAlign: 'center',
       },
-    inputInput: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 10,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-          width: 200,
-        },
+    
+    mailItem: {
+        marginTop: theme.spacing.unit * 10,
+    },
+    drawer: {
+        width: 250,
+        flexShrink: 0,
+        border: 0,
+        paddingBottom: 250,
+    },
+      drawerPaper: {
+        width: 250,
+        marginTop: '64px',
+        border: 0,
+        padding: 20,
     },
 });
 
 
-const cards_data = [
-    { id: 1, title: "Data", description: "Name hello 1" },
-    { id: 2, title: "Data 2", description: "Name hello 2" },
-    { id: 3, title: "Data 3", description: "Name hello 3" },
-    { id: 4, title: "Data 4", description: "Name hello 4" },
-    { id: 5, title: "Data 5", description: "Name hello 5" },
-    { id: 6, title: "Data 6", description: "Name hello 6" },
-    { id: 7, title: "Data 7", description: "Name hello 7" },
-    { id: 8, title: "Data 8", description: "Name hello 8" },
-];
+const fetchedData = [
+    {"Rarity": null,
+    "Price": 0,
+    "Use": null,
+    "Title": null,
+    "Link": null,
+    "Id": null,
+    },
+    {"Rarity": null,
+    "Price": 0,
+    "Use": null,
+    "Title": null,
+    "Link": null,
+    "Id": null,
+    },
+    {"Rarity": null,
+    "Price": 0,
+    "Use": null,
+    "Title": null,
+    "Link": null,
+    "Id": null,
+    },
+    {"Rarity": null,
+    "Price": 0,
+    "Use": null,
+    "Title": null,
+    "Link": null,
+    "Id": null,
+    }];
 
+  const filterMap = {
+      "price-asc-rank" : 1,
+      "price-desc-rank" : 2,
+      "rarity-asc-rank": 3,
+      "rarity-desc-rank": 4,
+  }
 class Store extends Component {
-    state = {
-        selectedIndex: 1,
-      };
+    constructor(props){
+        super(props);
+        this.state = {
+            selectedIndex: 0,
+            cards: fetchedData,
+        };
     
-    handleListItemClick = (event, index) => {
-        this.setState({ selectedIndex: index });
+    }
+    
+
+    componentDidMount(){
+        let q = this.props.location.search;
+        if (q !== null && q.trim() !== ''){
+            let id  = new URLSearchParams(q).get('filter');
+            this.setState({
+                selectedIndex: filterMap[id],
+            });
+        }
+        this.setState({
+            cards: fetchedData,
+        })
+    }
+  
+    fetchCardData = () => {
+        return fetch(CARD_URL, {
+            method: "POST",
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+                if (Object.entries(result).length !== 0 && !result.Error){
+                  let arr = result.Cards;
+                    this.setState({
+                        cards: arr,
+                    })
+                }
+                else {
+                    alert(result.Error)
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        )
+    }
+    
+    handleListItemClick = (event, type) => {
+        window.location.href = "/store?filter=" + type; 
     };
     
     render() {
         const { classes } = this.props;
         return (
-            <React.Fragment>
+            <div className={classes.root}>
                 <CssBaseline />
                 <NavBar />
-                    <div className={classes.heroUnit}>
-                    <div className={classes.heroContent}>
-                        <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
-                        Store
-                        </Typography>
-                    </div>
-                    </div>
-                    <div className={classes.layout}>
-                    <main>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                        placeholder="Search…"
+                <div className={classes.content}>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="permanent"
                         classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
+                            paper: classes.drawerPaper,
                         }}
-                        />
-                    </div>
-                    <Grid justify="center"  className={classes.mainGrid} container spacing={40}>
-                    <Grid item xs={12} md={2} >
+                        anchor="left"
+                    >
                         <Typography variant="h6" className={classes.title}>
                             Order By
                         </Typography>
                         <Divider />
-                            <List component="nav">
+                        <List component="nav">
                             <ListItem
                                 button
                                 selected={this.state.selectedIndex === 1}
-                                onClick={event => this.handleListItemClick(event, 1)}
+                                onClick={event => this.handleListItemClick(event, "price-asc-rank")}
                             >
-                                <ListItemText primary="Popularity" />
+                                <ListItemText primary="Price: Low to High" />
                             </ListItem>
                             <ListItem
                                 button
                                 selected={this.state.selectedIndex === 2}
-                                onClick={event => this.handleListItemClick(event, 2)}
+                                onClick={event => this.handleListItemClick(event, "price-desc-rank")}
                             >
-                                <ListItemText primary="Price" />
+                                <ListItemText primary="Price: High to Low" />
                             </ListItem>
                             <ListItem
                                 button
                                 selected={this.state.selectedIndex === 3}
-                                onClick={event => this.handleListItemClick(event, 3)}
+                                onClick={event => this.handleListItemClick(event, "rarity-asc-rank")}
                             >
-                                <ListItemText primary="Name" />
+                                <ListItemText primary="Rarity: Low to High" />
                             </ListItem>
                             <ListItem
                                 button
                                 selected={this.state.selectedIndex === 4}
-                                onClick={event => this.handleListItemClick(event, 4)}
+                                onClick={event => this.handleListItemClick(event, "rarity-desc-rank")}
                             >
-                                <ListItemText primary="Rating" />
+                                <ListItemText primary="Rarity: High to Low" />
                             </ListItem>
-                            </List>
-                    </Grid>
-                    <Grid item xs={12} md={10} >
-                    <div className={classes.cardGrid}>
-                    <ListCard data={cards_data}/>
-                    </div>
-                    </Grid>
-                    </Grid>
-                    
-                </main>
+                        </List>
+
+
+                    </Drawer>
+                    <main className={classes.mailContent}>
+                        <div className={classes.mailItem}>
+                            <ListCard className={classes.cardGrid} data={this.state.cards} />
+                        </div>
+                    </main>
                 </div>
-                {/* Footer */}
-                <Footer/>
-                {/* End footer */}
-            </React.Fragment>
+                <Footer />
+            </div>
+            
         );
     }
 

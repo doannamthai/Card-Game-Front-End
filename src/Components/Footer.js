@@ -10,6 +10,8 @@ const styles = theme => ({
         left: 0,
         bottom:0,
         right:0,
+        position: 'absolute',
+        height: 200,
     },
     spacer: {
         padding: '100px 0 0 0',

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import SimpleTable from './SimpleTable';
 import AdminNavBar from './AdminNavBar';
 
 
@@ -41,11 +39,7 @@ class Dashboard extends React.Component {
 
         <main className={classes.content}>        
         <div className={classes.appBarSpacer}/>
-          <Typography variant="h4" gutterBottom component="h2">
-            Products
-          </Typography>
           <div className={classes.tableContainer}>
-            <SimpleTable />
           </div>
         </main>
       </div>
