@@ -26,6 +26,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Authentication from '../../utils/Authentication';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { isAbsolute } from 'path';
+
 
 const styles = theme => ({
   root: {
@@ -55,9 +58,22 @@ const styles = theme => ({
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
+  loader: {
+    margin: 'auto',
+    width: 250,
+    textAlign: 'center',
+    position: isAbsolute,
+  },
 });
 
 
+
+function shortencontent(content){
+  if(content.length > 30){
+      return content.substring(0, 20) + "...";
+  }
+  return   content;
+}
 
 
 function createData(key, title, use, link, price, rarity) {
@@ -66,7 +82,7 @@ function createData(key, title, use, link, price, rarity) {
 
 function processCardData(jsonArray, dataStorage) {
   jsonArray.map((item, index) =>
-    dataStorage.push(createData(item.Id, item.Title, item.Use, item.Link, item.Price, item.Rarity))
+    dataStorage.push(createData(item.Card_id, item.Title, item.Use, item.Link, item.Price, item.Rarity))
   )
 }
 
@@ -105,6 +121,7 @@ class Dashboard extends React.Component {
       dialogTitle: '',
       dialogMessage: '',
       data: [],
+      loading: true,
     };
   }
   
@@ -186,7 +203,7 @@ class Dashboard extends React.Component {
       )
   }
 
-  onCardAction = url => v => {
+  onCardAction = () => {
     if (this.state.title.trim() === "" || this.state.use.trim() === "" || this.state.link.trim() === "" || this.state.rarity === ""){
       alert("Required fields must not be empty");
       return;
@@ -229,30 +246,35 @@ class Dashboard extends React.Component {
   }
 
   fetchCardData = () => {
-    return fetch(CARD_URL, {
-      method: 'GET',
+    return fetch(CARD_URL+"/getall", {
+        method: "GET",
     })
-      .then(res => res.json())
-      .then(
+    .then(res => res.json())
+    .then(
         (result) => {
-          if (!result.Error) {
-            var c = [];
-            processCardData(result.Cards, c);
-            this.setState({
-              data: c,
-            })
-          }
+            if (Object.entries(result).length !== 0 && !result.Error){
+              var c = [];
+              processCardData(result.Cards, c);
+              this.setState({
+                data: c,
+                loading: true,
+              })
+            }
+            else {
+              alert(result.Error)
+            }
         },
         (error) => {
-          console.log(error);
+            console.log(error);
         }
-      )
+    )
   }
 
- 
 
   render() {
     const { classes } = this.props;
+
+    const {loading} = this.state;
 
     return (
       <div className={classes.root}>
@@ -268,7 +290,11 @@ class Dashboard extends React.Component {
             <AddIcon />
           </Fab>
           <div className={classes.tableContainer}>
+          {loading ? <div className={classes.loader}><CircularProgress color="secondary" className={classes.progress} />
+                                <Typography className={classes.loadingFont}>Loading...</Typography></div>
+              :
             <Paper className={classes.root}>
+            
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
@@ -290,10 +316,10 @@ class Dashboard extends React.Component {
                       <TableCell component="th" scope="row">
                         {n.title}
                       </TableCell>
-                      <TableCell align="left">{n.use}</TableCell>
+                      <TableCell align="left">{shortencontent(n.use)}</TableCell>
                       <TableCell align="left">{n.price}</TableCell>
                       <TableCell align="left">{n.rarity}</TableCell>
-                      <TableCell component="th" scope="row">{n.link}</TableCell>
+                      <TableCell component="th" scope="row">{ shortencontent(n.link)}</TableCell>
                       <TableCell align="left">
                         <Button variant="contained" onClick = {this.openEdit(index)} color="primary" >
                           Modify
@@ -306,7 +332,9 @@ class Dashboard extends React.Component {
                   ))}
                 </TableBody>
               </Table>
+            
             </Paper>
+          }
           </div>
         </main>
     

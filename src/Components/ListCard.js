@@ -24,7 +24,7 @@ function ListCard(props) {
     return (
         <Grid container spacing={40}>
             {props.data.map((card) => 
-                <Grid item key={card.Id} sm={6} md={4} lg={3}>
+                <Grid item key={card.Card_id} sm={6} md={4} lg={3}>
                 <Card className={classes.card}>
                     <CardMedia
                         className={classes.cardMedia}
@@ -45,7 +45,7 @@ function ListCard(props) {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small" onClick={() => window.location.href = "/card/" + card.Id + "?o=" + card.Owner} color="primary">
+                        <Button size="small" onClick={() => window.location.href = "/card/" + card.Card_id+ "?o=" + card.Owner} color="primary">
                             View
                         </Button>
                     </CardActions>

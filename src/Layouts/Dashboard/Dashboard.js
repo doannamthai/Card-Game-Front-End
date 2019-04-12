@@ -14,6 +14,8 @@ import UniverseBackground from '../../Images/hell.jpg';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import {CARD_URL} from '../../ApisURL';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const styles = theme => ({
   main: {
@@ -57,7 +59,15 @@ const styles = theme => ({
   cardContent: {
     flexGrow: 1,
   },
-
+  loader: {
+    margin: 'auto',
+    width: 250,
+    textAlign: 'center',
+  },
+  loadingFont: {
+    color: "rgba(255, 255, 255, 0.7)", 
+    fontSize: 14,
+  },
 });
 
 const fetchedData = [
@@ -66,34 +76,35 @@ const fetchedData = [
   "Use": null,
   "Title": null,
   "Link": null,
-  "Id": null,
+  "Id": -1,
   },
   {"Rarity": null,
   "Price": 0,
   "Use": null,
   "Title": null,
   "Link": null,
-  "Id": null,
+  "Id": -2,
   },
   {"Rarity": null,
   "Price": 0,
   "Use": null,
   "Title": null,
   "Link": null,
-  "Id": null,
+  "Id": -3,
   },
   {"Rarity": null,
   "Price": 0,
   "Use": null,
   "Title": null,
   "Link": null,
-  "Id": null,
+  "Id": -4,
   },
 ]
 class Dashboard extends Component {
 
   state = {
       cards: fetchedData,
+      loading: true,
   }
 
   componentDidMount(){
@@ -101,16 +112,17 @@ class Dashboard extends Component {
   }
 
   fetchCardData = () => {
-      return fetch(CARD_URL, {
-          method: "POST",
+      return fetch(CARD_URL+"/getall", {
+          method: "GET",
       })
       .then(res => res.json())
       .then(
           (result) => {
               if (Object.entries(result).length !== 0 && !result.Error){
-                let arr = result.Cards.slice(0, 9);
+                let arr = result.Cards.slice(0, 8);
                   this.setState({
                       cards: arr,
+                      loading: false,
                   })
               }
               else {
@@ -130,7 +142,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    const {  cards } = this.state;
+    const {  cards, loading} = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
@@ -159,13 +171,14 @@ class Dashboard extends Component {
           <div className={classNames(classes.layout, classes.cardGrid)}>
             {/* End hero unit */}
             <Grid container spacing={40}>
-              {cards.map((card, index) => (
-                <Grid item key={card} sm={6} md={4} lg={3}>
+              {loading ? <div className={classes.loader}><CircularProgress color="secondary" className={classes.progress} />
+              <Typography className={classes.loadingFont}>Don't leave, we are loading your cards...</Typography></div> : cards.map((card, index) => (
+                <Grid item key={card.Card_id} sm={6} md={4} lg={3}>
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.cardMedia}
                       image={card.Link}
-                      title="Image title"
+                      title={Card.Title}
                     />
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h6" component="h2">
@@ -176,7 +189,7 @@ class Dashboard extends Component {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={this.handleOnLink("/card/" + card.Id)} size="small" color="primary">
+                      <Button onClick={this.handleOnLink("/card/" + card.Card_id + "?o=" + card.Owner)} size="small" color="primary">
                         View
                       </Button>
                     </CardActions>

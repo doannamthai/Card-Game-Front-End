@@ -48,41 +48,11 @@ const styles = theme => ({
     }
 });
 
-
-const fetchedData = [
-    {"Rarity": null,
-    "Price": 0,
-    "Use": null,
-    "Title": null,
-    "Link": null,
-    "Id": null,
-    },
-    {"Rarity": null,
-    "Price": 0,
-    "Use": null,
-    "Title": null,
-    "Link": null,
-    "Id": null,
-    },
-    {"Rarity": null,
-    "Price": 0,
-    "Use": null,
-    "Title": null,
-    "Link": null,
-    "Id": null,
-    },
-    {"Rarity": null,
-    "Price": 0,
-    "Use": null,
-    "Title": null,
-    "Link": null,
-    "Id": null,
-    }];
 class Collection extends Component {
 
     state = {
         open: false,
-        cards: fetchedData,
+        cards: [],
         card: null,
         profile: {
             userId: Authentication.getUserId(),
@@ -106,7 +76,7 @@ class Collection extends Component {
     }
 
     fetchCardData = () => {
-        return fetch(CARD_URL + "?user_id=" + this.state.profile.userId, {
+        return fetch(CARD_URL + "/getall/card?user_id=" + this.state.profile.userId, {
             method: "POST",
         })
         .then(res => res.json())
@@ -180,12 +150,13 @@ class Collection extends Component {
 
         let card = this.state.card;
         
-        fetch(SELL_CARD_URL + "?user_id=" + this.state.profile.userId + "&card_id=" + card.Id, {
+        fetch(SELL_CARD_URL + "?user_id=" + this.state.profile.userId + "&card_id=" + card.Card_id, {
             method: "POST",
         })
         .then(res => res.json())
         .then(
             (result) => {
+                
                 if (!result.Error){
                     window.location.reload();
                 }
@@ -246,7 +217,7 @@ class Collection extends Component {
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                <Typography variant="subtitle1" bold>
+                                <Typography variant="subtitle1">
                                     {profile.firstName}  {profile.lastName}
                                 </Typography>
                                 <Typography variant="subtitle1">{profile.emailAddress}</Typography>
@@ -257,7 +228,7 @@ class Collection extends Component {
                     <div className={classNames(classes.layout, classes.cardGrid)}>
                         {/* End hero unit */}
                         <Grid container spacing={40}>
-                            {cards.map((card, index) => (
+                            {cards.length === 0 ? <Typography style={{margin: 'auto', color: 'rgba(255, 255, 255, 0.7)', fontSize: 16}}>You don't have any card at the moment</Typography> : cards.map((card, index) => (
                                 <Grid item key={card} sm={6} md={4} lg={3}>
                                     <Card className={classes.card}>
                                         <CardMedia
@@ -271,7 +242,7 @@ class Collection extends Component {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button onClick={this.handleOnLink("/card/"+card.Id)} size="small" color="primary">
+                                            <Button onClick={this.handleOnLink("/card/"+card.Card_id+"?o="+ profile.userId)} size="small" color="primary">
                                                 View
                                             </Button>
                                             <Button onClick={this.selectCard(index)} size="small" color="primary">

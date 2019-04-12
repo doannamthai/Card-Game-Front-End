@@ -7,9 +7,10 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListCard from '../../components/ListCard';
 import Footer from '../../components/Footer';
-import { ListItem, ListItemText, Typography, InputBase} from '@material-ui/core';
+import { ListItem, ListItemText, Typography} from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import {CARD_URL} from '../../ApisURL';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const styles = theme => ({
@@ -41,6 +42,14 @@ const styles = theme => ({
         marginTop: '64px',
         border: 0,
         padding: 20,
+    },
+    loader: {
+        margin: 'auto',
+        width: 250,
+        textAlign: 'center',
+    },
+    loadingFont: {
+        color: 'rgba(255, 255, 255, 0.7)',
     },
 });
 
@@ -87,6 +96,7 @@ class Store extends Component {
         this.state = {
             selectedIndex: 0,
             cards: fetchedData,
+            loading: true,
         };
     
     }
@@ -94,20 +104,23 @@ class Store extends Component {
 
     componentDidMount(){
         let q = this.props.location.search;
+        let id = null;
         if (q !== null && q.trim() !== ''){
-            let id  = new URLSearchParams(q).get('filter');
+            id  = new URLSearchParams(q).get('filter');
             this.setState({
                 selectedIndex: filterMap[id],
             });
         }
-        this.setState({
-            cards: fetchedData,
-        })
+        if (id !== null){
+            this.fetchCardData("?filter=" + id);
+        } else {
+            this.fetchCardData("");
+        }
     }
   
-    fetchCardData = () => {
-        return fetch(CARD_URL, {
-            method: "POST",
+    fetchCardData(filter) {
+        return fetch(CARD_URL + "/getall" + filter, {
+            method: "GET",
         })
         .then(res => res.json())
         .then(
@@ -116,6 +129,7 @@ class Store extends Component {
                   let arr = result.Cards;
                     this.setState({
                         cards: arr,
+                        loading: false,
                     })
                 }
                 else {
@@ -134,6 +148,7 @@ class Store extends Component {
     
     render() {
         const { classes } = this.props;
+        const {loading} = this.state;
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -186,7 +201,9 @@ class Store extends Component {
                     </Drawer>
                     <main className={classes.mailContent}>
                         <div className={classes.mailItem}>
-                            <ListCard className={classes.cardGrid} data={this.state.cards} />
+                            {loading ? <div className={classes.loader}><CircularProgress color="secondary" className={classes.progress} />
+                                <Typography className={classes.loadingFont}>Don't leave, we are loading your cards...</Typography></div>
+                                : <ListCard className={classes.cardGrid} data={this.state.cards} />}
                         </div>
                     </main>
                 </div>

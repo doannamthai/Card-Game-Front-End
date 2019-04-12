@@ -93,7 +93,6 @@ class CardProfile extends Component {
     .then(
         (result) => {
           if (!result.Error) {
-            console.log(JSON.stringify(result));
             this.setState({
               cardId: id,
               image: result.Link,
@@ -136,6 +135,12 @@ class CardProfile extends Component {
     )
 }
 
+onBuy= () => {
+  this.setState({ 
+    open: true, 
+  });
+}
+
 
   render() {
     const { classes } = this.props;
@@ -149,15 +154,17 @@ class CardProfile extends Component {
             <Grid container spacing={40} className={classes.mainGrid}>
               <Grid item xs={12} md={4} className={classes.media}>
                 <img className={classes.cardImage} src={image} alt="Card" />
+                {Authentication.getUserId() === null || Authentication.getUserId() === undefined ? null : 
                 <Button
                   variant="contained"
                   color="default"
                   onClick={this.onBuy}
                   className={classes.button}
-                  disabled={OWNER_ID === 1 ? true : false}
+                  disabled={OWNER_ID !== 1 || OWNER_ID - Authentication.getUserId() === 0? true : false}
                   >
-                  Buy
+                  {OWNER_ID - Authentication.getUserId() === 0 ? "You own this card" : "Buy"}
                 </Button>
+                }
               </Grid>
               <Grid item xs={12} md={8}>
                 <Typography variant="h4" gutterBottom>
