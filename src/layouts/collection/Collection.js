@@ -178,7 +178,7 @@ class Collection extends Component {
                 <NavBar />
                 <main className={classes.main}>
                 <Box component="main" maxWidth={1200} margin="auto" padding="60px 20px 0">
-                    <Box mb="66px">
+                    <Box mb="44px">
                         <Grid container>
                             <Grid item xs={4}>
                                 <Avatar

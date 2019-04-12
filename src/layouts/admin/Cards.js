@@ -257,7 +257,7 @@ class Dashboard extends React.Component {
               processCardData(result.Cards, c);
               this.setState({
                 data: c,
-                loading: true,
+                loading: false,
               })
             }
             else {

@@ -94,7 +94,7 @@ class CardProfile extends Component {
         (result) => {
           if (!result.Error) {
             this.setState({
-              cardId: id,
+              card_id: id,
               image: result.Link,
               title: result.Title,
               description: result.Use,
@@ -116,13 +116,13 @@ class CardProfile extends Component {
 
     let cardId = this.state.card_id;
     let userId = Authentication.getUserId();
-    
     fetch(BUY_CARD_URL + "?user_id=" + userId + "&card_id=" + cardId, {
         method: "POST",
     })
     .then(res => res.json())
     .then(
         (result) => {
+          console.log(result);
             if (!result.Error){
                 window.location.href = "/store";
             }
@@ -186,7 +186,7 @@ onBuy= () => {
             onClose={this.handleClose}
             aria-labelledby="alert-dialog-title"
           >
-            <DialogTitle id="alert-dialog-title">{"Sell the card"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{"Buy the card"}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 Please confirm to purchase "{this.state.title}" with {this.state.price} coins ?
